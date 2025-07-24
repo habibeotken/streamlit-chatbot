@@ -32,7 +32,7 @@ def get_ollama_response(user_input, chat_history):
     except requests.exceptions.ConnectionError:
         st.error("Ollama sunucusuna bağlanılamıyor. Host makine üzerinde Ollama'nın çalıştığından emin olun.")
     except Exception as e:
-        st.error(f"❌ Hata: {str(e)}")
+        st.error(f" Hata: {str(e)}")
         st.error("API Yanıtı:", response.text if 'response' in locals() else "Yanıt alınamadı")
     return None
 
