@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-models:/root/.ollama
+
+  chatbot:
+    build: .
+    container_name: streamlit-chatbot
+    ports:
+      - "8501:8501"
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_API=http://ollama:11434
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx-streamlit:/usr/share/nginx/html
+    ports:
+      - "80:80"
+    depends_on:
+      - ollama
+    networks:
+      - chatbot-network
+
+volumes:
+  ollama-models:
+
+networks:
+  chatbot-network:
